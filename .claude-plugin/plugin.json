@@ -1,0 +1,6 @@
+{
+  "name": "safe-delete",
+  "version": "0.1.0",
+  "description": "Sends files and folders Claude deletes to the Trash instead, with a band and /restore to put them back",
+  "types": "./types/index.d.ts"
+}
