@@ -1,0 +1,23 @@
+name: Gitmoji
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  check:
+    name: PR title and commits follow gitmoji
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check the PR title and every commit subject
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          mapfile -t subjects < <(git log --no-merges --format=%s "$BASE..$HEAD")
+          node .github/scripts/check-gitmoji.mjs "$PR_TITLE" "${subjects[@]}"
